@@ -1,0 +1,30 @@
+div {
+  width: 100px;
+  height: 100px;
+  background-image: url(https://www.serebii.net/xy/pokemon/383.png);
+    background-repeat: no-repeat;
+  background-size: contain;
+  animation-name: example;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+filter: drop-shadow(3px 3px 5px black);
+}
+
+@keyframes example {
+  0%   {
+    filter: drop-shadow(1px 2px 3px black);
+    transform: skew(0deg, 1deg) rotate(-1deg) scale(1);
+  }
+  33%  {
+    filter: drop-shadow(1px 1px 4px black);
+    transform: skew(-1deg, 1deg) rotate(1deg) scale(1.01);
+  }
+  66% {
+    filter: drop-shadow(1px 1px 4px black);
+    transform: skew(0deg, -1deg) rotate(-1deg) scale(1.02);
+  }
+  100%   {
+    filter: drop-shadow(1px 2px 3px black);
+    transform: skew(0deg, 1deg) rotate(-1deg) scale(1);
+  }
+}

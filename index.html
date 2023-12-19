@@ -1,0 +1,8 @@
+<script>
+  if(location.search.length<3){
+    location.replace(location.origin+"/"+(""+navigator?.language)?.split('-')?.[0]+"/"+location.search);
+  }else{
+    location.replace(location.origin+"/_root"+location.search);
+  }
+  </script>
+  <noscript><meta http-equiv="refresh" content="0; url=/en/" /></noscript>

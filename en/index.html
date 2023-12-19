@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script>
+
+if((document.title=='404: Not Found')&&(!(location.href.includes('reload')))){location.href=location.href+'?reload';location.reload();}
+  
+  if(!globalThis.hostTargetList){
+  globalThis.hostTargetList = ['www.ruby-lang.org','docs.ruby-lang.org','ruby-doc.org','ruby-doc.com','www.ruby-doc.org','www.ruby-doc.com'];
+
+}
+
+
+
+
+try{
+ /* document.firstElementChild.style.filter='hue-rotate(-45deg)';*/
+
+   }catch(e){}
+window.addEventListener("DOMContentLoaded", (event) => {try{
+
+}catch(e){}});
+
+
+  //linkSheets();
+
+
+document.addEventListener("readystatechange", (event) => {
+ // linkSheets();
+});
+
+document.addEventListener("DOMContentLoaded", (event) => {
+ // linkSheets();
+});
+
+document.addEventListener("load", (event) => {
+  //linkSheets();
+});
+
+
+setInterval(function(){
+
+  transformLinks('href');
+  transformLinks('src');
+  transformLinks('action');
+ // linkSheetsAsync();
+},100);
+
+
+
+async function transformLinks(attr){
+
+let rubydocs=document.querySelectorAll('a[href*="www.ruby-doc.com"],a[href*="ruby-doc.org"]')
+let rubydocs_length=rubydocs.length;
+for(let i=0;i<rubydocs_length;i++){try{
+rubydocs[i].href=rubydocs[i].href
+.replace(/www.ruby-doc.com/gi,'ruby-doc.com')
+.replace(/www.ruby-doc.org/gi,'ruby-doc.com')
+.replace(/ruby-doc.org/gi,'ruby-doc.com');
+}catch(e){continue;}}
+
+ let pkgs = document.querySelectorAll('['+attr+'^="/"]:not([backup]),['+attr+'^="./"]:not([backup]),['+attr+'^="../"]:not([backup]),['+attr+']:not(['+attr+'*=":"]):not([backup])');
+  let pkgs_length = pkgs.length;
+  for(let i=0;i<pkgs_length;i++){
+    await backupNode(pkgs[i]);
+       pkgs[i].setAttribute(attr,pkgs[i][attr]);
+  }
+
+  const hostTargetList_length = globalThis.hostTargetList.length;
+  for(let i=0;i<hostTargetList_length;i++){
+    pkgs = document.querySelectorAll('['+attr+'^="https://'+globalThis.hostTargetList[i]+'"]:not([backup])');
+    pkgs_length = pkgs.length;
+    for(let x=0;x<pkgs_length;x++){
+      await backupNode(pkgs[x]);
+      let hash='';
+      if(pkgs[x][attr].includes('#')){hash='#'+pkgs[x][attr].split('#')[1];}
+      let char='?';
+      if(pkgs[x][attr].includes('?')){char='&';}
+         pkgs[x].setAttribute(attr,
+                           pkgs[x][attr].split('#')[0]
+                              .replace('https://'+globalThis.hostTargetList[i],
+                               window.location.origin)+
+                              char+'hostname='+
+                              globalThis.hostTargetList[i]+
+                              '&referer='+window.location.host+
+                              hash);
+    }  
+
+  }
+
+  pkgs = document.querySelectorAll('['+attr+'^="http://"]:not([backup])');
+    pkgs_length = pkgs.length;
+    for(let x=0;x<pkgs_length;x++){
+      await backupNode(pkgs[x]);
+      let char='?';
+      if(pkgs[x][attr].includes('?')){char='&';}
+         pkgs[x].setAttribute(attr,
+                           pkgs[x][attr].replaceAll("http://","https://"));
+    }
+
+let downloads = document.querySelectorAll('a[href*=".tar.xz"]:not(a[href*="www.nodejs.org"])');
+let downloads_length = downloads.length;
+for(let i=0;i<downloads_length;i++){try{
+  downloads[i].href=downloads[i].href.replace(window.location.hostname,'www.nodejs.org');
+}catch(e){continue;}}
+
+let slashLinks = document.querySelectorAll('a[href^="http"]:not([href$="/"],[href*=".html"],[href*=".tar.xz"],[href*=".json"],[href*=".jsml"],[href*=".css"],[href*=".woff"],[backup])');
+
+
+let slashLinks_length = slashLinks.length;
+for(let x=0;x<slashLinks_length;x++){try{
+slashLinks[x].href=slashLinks[x].href+'/';
+}catch(e){continue;}}
+
+let logos = document.querySelectorAll('img[src*="logo"]');
+let logos_length=logos.length;
+
+for(let x=0;x<logos_length;x++){try{
+logos[x].src='/mode.svg';
+}catch(e){continue;}}
+    let localhostname = globalThis.proxyhost;
+    if(window.location.href.includes('hostname=')){
+    localhostname = window.location.href.split('hostname=')[1].split('&')[0].split('?')[0].split('#')[0];
+    }else{
+      if(!(globalThis.proxyhost)){return;}
+    }
+    pkgs = document.querySelectorAll('['+attr+'^="'+window.location.origin+'"]:not(['+attr+'*="hostname="],['+attr+'$="tour"],['+attr+'$="tour/"])');
+    pkgs_length = pkgs.length;
+    for(let x=0;x<pkgs_length;x++){
+      let hash='';
+      if(pkgs[x][attr].includes('#')){hash='#'+pkgs[x][attr].split('#')[1];}
+      let char='?';
+      if(pkgs[x][attr].includes('?')){char='&';}
+         pkgs[x].setAttribute(attr,
+                           pkgs[x][attr].split('#')[0]+char+'hostname='+localhostname+'&referer='+window.location.host+hash);
+    }
+
+
+}
+
+
+
+
+if(!globalThis.backupElements){globalThis.backupElements={};}
+async function backupNode(element){try{
+  if(element.tagName.toLowerCase()!='link'){return;}
+  if(element.getAttribute('rel')!='stylesheet'){return;}
+  if(document.querySelectorAll('[href="'+element.getAttribute('href')+'"]').length>2){return;}
+  if(document.querySelector('[href="'+element.getAttribute('href')+'"][backup]')){
+await new Promise((resolve, reject) => {setTimeout(resolve,100);})
+
+  }
+  let backup = element.cloneNode(true);
+  let backupId = new Date().getTime();
+  backup.setAttribute('backup',backupId);
+  if(document.head){
+  document.head.insertBefore(backup,document.head.firstElementChild);
+  }else{
+  let h=document.createElement('head');
+  document.firstElementChild.appendChild(h);
+  document.firstElementChild.appendChild(backup);
+  }
+  backup.promise = new Promise((resolve, reject) => {
+    globalThis.backupElements[''+backupId]={"promise":backup.promise,"resolve":resolve};
+});
+  backup.onerror = function(e){globalThis.backupElements[backupId].resolve();}
+  backup.onload = function(e){globalThis.backupElements[backupId].resolve();}
+  backup.style.visibility="hidden";
+  if(document.head){
+  document.head.insertBefore(backup,document.head.firstElementChild);
+  }else{
+  let h=document.createElement('head');
+  document.firstElementChild.appendChild(h);
+  document.firstElementChild.appendChild(backup);
+  }
+const promise1 = new Promise((resolve, reject) => {setTimeout(resolve,100);});
+
+  await Promise.race([backup.promise,promise1]) ;
+  return;
+}catch(e){
+  return;
+  }
+}
+
+
+      function linkSheets(){
+       let linksheets = document.querySelectorAll('link[rel="stylesheet"]:not([styled])');
+       let linksheets_length = linksheets.length;
+       for(let i=0;i<linksheets_length;i++){try{
+if(document.querySelector('style[url="'+linksheets[i].href+'"]')){
+continue;
+}
+
+let request = new XMLHttpRequest();
+request.open("GET", linksheets[i].href, false); 
+request.send(null);
+
+if (request.status === 200) {
+ let linksheet_text = request.responseText; 
+ let ls = document.createElement('style');
+ ls.innerHTML = linksheet_text;
+ ls.setAttribute('url',linksheets[i].href);
+ document.body.appendChild(ls)
+}
+
+       linksheets[i].setAttribute('styled','true');
+
+       }catch(e){linksheets[i].setAttribute('styled','true');continue;}}
+
+     }
+
+       async function linkSheetsAsync(){
+        let linksheets = document.querySelectorAll('link[rel="stylesheet"]:not([styled],[backup])');
+        let linksheets_length = linksheets.length;
+        for(let i=0;i<linksheets_length;i++){try{
+if(document.querySelector('style[url="'+linksheets[i].href+'"]')){
+continue;
+}
+
+
+     let request = await fetch(linksheets[i].href);
+
+
+     let linksheet_text = await request.text(); 
+     let ls = document.createElement('style');
+     ls.innerHTML = linksheet_text;
+     ls.setAttribute('url',linksheets[i].href);
+     document.body.appendChild(ls)
+
+
+        linksheets[i].setAttribute('styled','true');
+
+        }catch(e){linksheets[i].setAttribute('styled','true');continue;}}
+
+      }
+
+
+
+
+
+void async function preloaded(){
+try{
+
+const cache = await caches.open('app');
+let all = await cache.matchAll();
+
+for(let i=0;i<all.length;i++){
+try{
+const url = all[i].url;
+let links = document.querySelectorAll('a[href="'+url+'"]');
+for(let x=0;x<links.length;x++){try{
+
+links[x].setAttribute('preloaded','true');
+
+
+}catch(e){continue;}}
+
+
+}catch(e){continue;}}
+}catch(e){}
+}();
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function preloadLink(a){
+if(!a){return;}
+a.setAttribute('preloaded','true');
+preloader(a.href);
+}
+
+
+
+async function preloader(url){
+  let ifr = document.createElement('iframe');
+  ifr.setAttribute('frameborder','0');
+  ifr.style.border='none';
+  ifr.style.padding='0px';
+  ifr.style.margin='0px';
+  ifr.style.visibility='none';
+  ifr.style.height='0px';
+  ifr.style.width='0px';
+  ifr.src = url;
+  document.body.appendChild(ifr);
+  await sleep(5000);
+  ifr.remove();
+}
+
+setInterval(function(){
+
+if(window==window.top){
+  preloadLink(document.querySelector('a[href^="'+window.location.origin+'"]:not([preloaded],html[user-agent*="obile"] *)'));
+}
+
+},8000);
+
+
+      
+</script>
+  
+  <script>
+
+    void function rubyscript(){
+
+    globalThis.await=(promise)=>{console.log("Attempting to await promise in synchronous context ",promise);return promise;};
+
+    globalThis.yield=(next)=>{console.log("Attempting to yield next outside of a generator ",next);return next;};
+
+
+    globalThis.queryApplyAll=async function(query,func){
+
+    let elems=Array.from(document.querySelectorAll(query));
+    const elems_length=elems.length;
+    for(let i=0;i<elems_length;i++){try{
+      func(elems[i]);
+    }catch(e){await("queryApplyAll");console.log(e); continue;}}
+
+    }
+
+    Element.prototype.updateAttribute=function(attr,val){
+    const el = this;
+    if(!(el.hasAttribute(attr,val))){
+    el.setAttribute(attr,val);
+    }else{
+    if(el.getAttribute(attr)!=val){
+    el.setAttribute(attr,val);
+    }
+    }
+    }
+
+    if(!(globalThis.declarations)){globalThis.declarations=[];globalThis.declarationStrings=[];}
+
+    globalThis.declare=function(func){
+        let funcString=func.toString();
+        if(!(declarationStrings.includes(funcString))){
+         globalThis.declarations.push(func);
+         globalThis.declarationStrings.push(funcString);
+        }
+    };
+
+    globalThis.declareEvaluator=async function(){
+    
+      const declarations_length = declarations.length;
+    	for(let i = 0;i < declarations_length;i++){try{
+   
+    		declarations[i]();
+   
+    	}catch(e){await("declareEvaluator");console.log(e);continue;}}
+   
+    };
+
+
+    globalThis.declareEvaluator();
+    document.addEventListener("DOMContentLoaded", (event) => {globalThis.declareEvaluator();});
+    document.addEventListener("readystatechange", (event) => {globalThis.declareEvaluator();});
+    window.addEventListener("load", (event) => {globalThis.declareEvaluator();});
+    setInterval(function(){globalThis.declareEvaluator();},100);
+
+
+
+    globalThis.page_html = document.querySelector('html');
+
+    page_html.setAttribute('window-location' , window.location.href);
+    declare(()=>page_html.updateAttribute('window-location' , window.location.href));
+
+    page_html.setAttribute('user-agent' , navigator.userAgent);
+    declare(()=>page_html.updateAttribute('user-agent' , navigator.userAgent));
+
+    if (window!=window.top){
+    page_html.setAttribute('framed','');
+    }
+
+    declare(()=>{
+
+      if(window.innerHeight==window.innerWidth){
+        page_html.updateAttribute('orientation','square');
+      }
+      if(window.innerHeight>window.innerWidth){
+        page_html.updateAttribute('orientation','portrait');
+      }
+      if(window.innerHeight<window.innerWidth){
+        page_html.updateAttribute('orientation','landscape');
+      }
+
+    });
+
+
+    declare(()=>{
+
+      const untagged = Array.from(document.querySelectorAll(':not([tag-name])'));
+      const untagged_length=untagged.length;
+      for(let i=0;i<untagged_length;i++){try{
+      const tagname = untagged[i].outerHTML.toString().split('<')[1].split(' ')[0].split('>')[0];
+      untagged[i].setAttribute('tag-name',tagname);
+      }catch(e){continue;}}
+
+    });
+
+
+    function swapSapphireText(el){
+
+      if(!el){return;}
+      var n, a=[], walk=document.createTreeWalker(el,NodeFilter.SHOW_</script>
+  
+  <script>
+
+globalThis.highlightLang='ruby';
+
+globalThis.highlighter=async function(){
+  if(document.querySelector('[class*="language-"]:not(:has(.token,a))')){
+  try{
+    if(globalThis.Prism){
+      let hs=Array.from(document.querySelectorAll('[class*="language-"]:not(:has(.token,a))'));
+      let hs_length=hs.length;
+      for(let i=0 ; i<hs_length ; i++){try{
+        await Prism.highlightElement?.(hs[i]);
+      }catch(e){await("highlight");continue;}}
+      //await Prism.highlightAll();
+      }
+      
+    }catch(e){await(console.log(e));}
+  }
+}
+
+
+declare(async ()=>{
+if(!(document.querySelector('link[href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css"]'))){
+  let prismCss = document.createElement('link');
+  prismCss.setAttribute('href','https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css');
+  prismCss.updateAttribute('rel','stylesheet');
+  document.firstElementChild.appendChild(prismCss);
+}
+
+await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js');
+await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-ruby.min.js');
+
+
+queryApplyAll('code a',(a)=>{a.updateAttribute('class','token');});
+
+let prs=Array.from(document.querySelectorAll('pre:not([class],:has(a))'));
+const prs_length=prs.length;
+for(let i=0;i<prs_length;i++){try{
+  prs[i].innerHTML='<code class="language-ruby">'+prs[i].innerHTML+'</code>';
+  prs[i].updateAttribute('class','language-ruby');
+}catch(e){await console.log(e); continue;}}
+
+let notprs=Array.from(document.querySelectorAll(':not(pre)>code:not(:has(a))'));
+const notprs_length=notprs.length;
+for(let i=0;i<notprs_length;i++){try{
+  notprs[i].updateAttribute('class','language-ruby');
+  notprs[i].outerHTML='<pre class="language-ruby">'+notprs[i].outerHTML+'</pre>';
+}catch(e){await console.log(e); continue;}}
+
+let aprs=Array.from(document.querySelectorAll('pre[class*="language-"]:not(:has(code,.token,a))'));
+const aprs_length=aprs.length;
+for(let i=0;i<aprs_length;i++){try{
+if(aprs[i].innerHTML.toString().includes('#highlight#')){
+aprs[i].innerHTML='<code class="language-ruby">'+aprs[i].innerHTML+'</code>';
+}else{
+  aprs[i].innerHTML='<code class="language-ruby">\\n#highlight#\\n'+aprs[i].innerHTML+'</code>';
+  }
+}catch(e){await console.log(e); continue;}}
+
+if(document.querySelector('[class*="language-"]:not(:has(.token,a))')){
+highlighter();
+}
+
+});
+
+
+
+declare(async ()=>{
+
+let comments=Array.from(document.querySelectorAll('.comment:not([comment="highlight"])'));
+const comments_length=comments.length;
+for(let i=0;i<comments_length;i++){try{
+
+if(comments[i].innerHTML.toString().trim()=='#highlight#'){
+  comments[i].updateAttribute('comment','highlight');
+}
+
+}catch(e){await("comments");console.log(e);continue;}}
+
+
+});
+
+</script>
+  
+  <style>
+  
+
+ html{cursor: url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/0/0c/383MS6.png), auto;}
+
+ html[window-location*="sapphire"],
+ html[workerhost*="sapphire"]{
+cursor:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/9/95/382MS6.png), auto;
+ 
+ }
+
+ html[window-location*="emerald"],
+ html[workerhost*="emerald"]{
+cursor:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/d/d0/384MS6.png), auto;
+
+ }
+
+  html[window-location*="rua"],
+  html[workerhost*="rua"]{
+cursor: url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/1/1b/112_II_OD.png), auto;
+
+  }
+ 
+#header_content>a{
+  background: url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/e/ed/Spr_5b_383.png) no-repeat left 8px !important;
+  background-size: 20% !important;
+}
+
+@media screen and (min-width: 768px) {
+
+  a.download-link{
+    background:#CC342D url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/8/8e/Ani383OD.png) no-repeat 8px center !important;
+    background-size: 25% !important;
+    background-position-x: left !important;
+    background-position-y: bottom !important;
+  }
+  
+}
+
+html[window-location*="ruby-doc.com"] #header{
+background:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/7/7d/Spr_3e_383.png) 850px 0 no-repeat !important;
+}
+
+
+
+html[window-location*="rua"]:not([framed]),
+html[workerhost*="rua"]:not([framed])
+{
+filter:hue-rotate(-100deg) brightness(0.8) saturate(2) contrast(2)
+}
+
+
+
+html[window-location*="sapphire"]:not([framed]),
+html[workerhost*="sapphire"]:not([framed]){
+filter:hue-rotate(-120deg);
+}
+
+html[window-location*="sapphire"] #header_content>a,
+html[workerhost*="sapphire"] #header_content>a{
+  background:  url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/1/10/Spr_5b_382.png) no-repeat left 8px !important;
+  background-size: 25% !important;
+  background-position-y: bottom !important;
+  filter:hue-rotate(120deg);
+}
+
+
+@media screen and (min-width: 768px) {
+
+ html[window-location*="sapphire"] a.download-link,
+ html[workerhost*="sapphire"] a.download-link{
+    background:#CC342D url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/c/c6/Ani382OD.png) no-repeat 8px center !important;
+background-size: 20% !important;
+    background-position-x: left !important;
+    background-position-y: -10px !important;
+    filter: hue-rotate(120deg);
+      background-color: #2D34CC !important;
+      border: 2px solid #161c9b !important;
+      -webkit-box-shadow: 0 2px 0 #161c9b !important;
+      -moz-box-shadow: 0 2px 0 #161c9b !important;
+      box-shadow: 0 2px 0 #161c9b !important;
+
+  }
+
+}
+
+html[window-location*="sapphire"][window-location*="ruby-doc.com"] #header,
+html[workerhost*="sapphire"][window-location*="ruby-doc.com"] #header{
+background:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/8/80/Spr_3e_382.png) 850px 0 no-repeat !important;
+filter: hue-rotate(120deg);
+
+}
+
+html[window-location*="sapphire"][window-location*="ruby-doc.com"] #header a,
+html[workerhost*="sapphire"][window-location*="ruby-doc.com"] #header a{
+  filter:hue-rotate(-120deg);
+  color:#CC342D !important;
+}
+
+
+
+
+
+html[window-location*="emerald"]:not([framed]),
+html[workerhost*="emerald"]:not([framed]){
+filter:hue-rotate(135deg);
+}
+
+html[window-location*="emerald"] #header_content>a,
+html[workerhost*="emerald"] #header_content>a{
+  background:  url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/5/55/Spr_5b_384.png)   no-repeat left 8px !important;
+  background-size: 25% !important;
+  background-position-y: bottom !important;
+  filter:hue-rotate(-135deg);
+}
+
+
+@media screen and (min-width: 768px) {
+
+ html[window-location*="emerald"] a.download-link,
+ html[workerhost*="emerald"] a.download-link{
+    background:#CC342D url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/2/27/Box_XD_384.png) no-repeat 8px center !important;
+    background-size: 18% !important;
+    background-position-y: bottom !important;
+    filter: hue-rotate(-135deg);
+      background-color: #34CC2D !important;
+      border: 2px solid #1c9b16 !important;
+      -webkit-box-shadow: 0 2px 0 #1c9b16 !important;
+      -moz-box-shadow: 0 2px 0 #1c9b16 !important;
+      box-shadow: 0 2px 0 #1c9b16 !important;
+
+  }
+
+}
+
+html[window-location*="emerald"][window-location*="ruby-doc.com"] #header,
+html[workerhost*="emerald"][window-location*="ruby-doc.com"] #header{
+  background:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/4/4f/Spr_3e_384.png) 850px 0 no-repeat !important;
+  filter:hue-rotate(-135deg)
+}
+
+html[window-location*="emerald"][window-location*="ruby-doc.com"] #header a,
+html[workerhost*="emerald"][window-location*="ruby-doc.com"] #header a{
+  filter:hue-rotate(135deg);
+  color:#34CC2D !important;
+}
+
+
+
+
+
+
+html[window-location*="docs.ruby-lang.org"] a,
+html[window-location*="ruby-doc.com"] a,
+html[window-location*="ruby-doc.com"] h1,
+html[window-location*="stdlib"] a,
+html[window-location*="stdlib"] h1{
+color: #CC342D !important;
+text-shadow:1px 1px 2px white, -1px -1px 2px white, -1px 1px 2px white, 1px -1px 2px white;
+}
+
+.menu_box>a,[id="actionbar"] a{text-shadow:none !important;} 
+
+.default-ad,.carbonad,[data-attributes*="carbon"]{display:none !important;}
+
+[comment="highlight"]{display:none;}
+
+table,table *,.language-ruby{
+border-radius: 1vmin;
+box-shadow:0 0 3px rgba(0,0,0,0.4);
+}
+.language-ruby *,td a,td i,span{
+box-shadow:none !important;
+}
+
+
+  </style>
+  <script src="/sw.js"></script>
+  <script src="/api/link-resolver.js"></script>
+  <script src="/api/rubyscript.js"></script>
+  <script src="/api/highlight.js"></script>
+  <link rel="stylesheet" type="text/css" href="/api/rubystyle.css"> 
+    <meta charset="utf-8">
+
+    
+    <title>Ruby Programming Language</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta itemprop="image" content="https://www.ruby-lang.org/images/header-ruby-logo@2x.png">
+    
+    <meta name="description" content="">
+    
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/normalize.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/mobile.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/print.css">
+    <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic&amp;subset=latin,cyrillic,greek,vietnamese' rel='stylesheet' type='text/css'>
+    <link rel="canonical" href="https://www.ruby-lang.org/en/">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    
+    <link href="/en/feeds/news.rss" rel="alternate" title="Recent News (RSS)" type="application/rss+xml">
+
+
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/page.js"></script>
+    
+    
+    <script type="text/javascript" src="/javascripts/examples.js"></script>
+    
+    
+  
+  <script>
+
+if((document.title=='404: Not Found')&&(!(location.href.includes('reload')))){location.href=location.href+'?reload';location.reload();}
+  
+  if(!globalThis.hostTargetList){
+  globalThis.hostTargetList = ['www.ruby-lang.org','docs.ruby-lang.org','ruby-doc.org','ruby-doc.com','www.ruby-doc.org','www.ruby-doc.com'];
+
+}
+
+
+
+
+try{
+ /* document.firstElementChild.style.filter='hue-rotate(-45deg)';*/
+
+   }catch(e){}
+window.addEventListener("DOMContentLoaded", (event) => {try{
+
+}catch(e){}});
+
+
+  //linkSheets();
+
+
+document.addEventListener("readystatechange", (event) => {
+ // linkSheets();
+});
+
+document.addEventListener("DOMContentLoaded", (event) => {
+ // linkSheets();
+});
+
+document.addEventListener("load", (event) => {
+  //linkSheets();
+});
+
+
+setInterval(function(){
+
+  transformLinks('href');
+  transformLinks('src');
+  transformLinks('action');
+ // linkSheetsAsync();
+},100);
+
+
+
+async function transformLinks(attr){
+
+let rubydocs=document.querySelectorAll('a[href*="www.ruby-doc.com"],a[href*="ruby-doc.org"]')
+let rubydocs_length=rubydocs.length;
+for(let i=0;i<rubydocs_length;i++){try{
+rubydocs[i].href=rubydocs[i].href
+.replace(/www.ruby-doc.com/gi,'ruby-doc.com')
+.replace(/www.ruby-doc.org/gi,'ruby-doc.com')
+.replace(/ruby-doc.org/gi,'ruby-doc.com');
+}catch(e){continue;}}
+
+ let pkgs = document.querySelectorAll('['+attr+'^="/"]:not([backup]),['+attr+'^="./"]:not([backup]),['+attr+'^="../"]:not([backup]),['+attr+']:not(['+attr+'*=":"]):not([backup])');
+  let pkgs_length = pkgs.length;
+  for(let i=0;i<pkgs_length;i++){
+    await backupNode(pkgs[i]);
+       pkgs[i].setAttribute(attr,pkgs[i][attr]);
+  }
+
+  const hostTargetList_length = globalThis.hostTargetList.length;
+  for(let i=0;i<hostTargetList_length;i++){
+    pkgs = document.querySelectorAll('['+attr+'^="https://'+globalThis.hostTargetList[i]+'"]:not([backup])');
+    pkgs_length = pkgs.length;
+    for(let x=0;x<pkgs_length;x++){
+      await backupNode(pkgs[x]);
+      let hash='';
+      if(pkgs[x][attr].includes('#')){hash='#'+pkgs[x][attr].split('#')[1];}
+      let char='?';
+      if(pkgs[x][attr].includes('?')){char='&';}
+         pkgs[x].setAttribute(attr,
+                           pkgs[x][attr].split('#')[0]
+                              .replace('https://'+globalThis.hostTargetList[i],
+                               window.location.origin)+
+                              char+'hostname='+
+                              globalThis.hostTargetList[i]+
+                              '&referer='+window.location.host+
+                              hash);
+    }  
+
+  }
+
+  pkgs = document.querySelectorAll('['+attr+'^="http://"]:not([backup])');
+    pkgs_length = pkgs.length;
+    for(let x=0;x<pkgs_length;x++){
+      await backupNode(pkgs[x]);
+      let char='?';
+      if(pkgs[x][attr].includes('?')){char='&';}
+         pkgs[x].setAttribute(attr,
+                           pkgs[x][attr].replaceAll("http://","https://"));
+    }
+
+let downloads = document.querySelectorAll('a[href*=".tar.xz"]:not(a[href*="www.nodejs.org"])');
+let downloads_length = downloads.length;
+for(let i=0;i<downloads_length;i++){try{
+  downloads[i].href=downloads[i].href.replace(window.location.hostname,'www.nodejs.org');
+}catch(e){continue;}}
+
+let slashLinks = document.querySelectorAll('a[href^="http"]:not([href$="/"],[href*=".html"],[href*=".tar.xz"],[href*=".json"],[href*=".jsml"],[href*=".css"],[href*=".woff"],[backup])');
+
+
+let slashLinks_length = slashLinks.length;
+for(let x=0;x<slashLinks_length;x++){try{
+slashLinks[x].href=slashLinks[x].href+'/';
+}catch(e){continue;}}
+
+let logos = document.querySelectorAll('img[src*="logo"]');
+let logos_length=logos.length;
+
+for(let x=0;x<logos_length;x++){try{
+logos[x].src='/mode.svg';
+}catch(e){continue;}}
+    let localhostname = globalThis.proxyhost;
+    if(window.location.href.includes('hostname=')){
+    localhostname = window.location.href.split('hostname=')[1].split('&')[0].split('?')[0].split('#')[0];
+    }else{
+      if(!(globalThis.proxyhost)){return;}
+    }
+    pkgs = document.querySelectorAll('['+attr+'^="'+window.location.origin+'"]:not(['+attr+'*="hostname="],['+attr+'$="tour"],['+attr+'$="tour/"])');
+    pkgs_length = pkgs.length;
+    for(let x=0;x<pkgs_length;x++){
+      let hash='';
+      if(pkgs[x][attr].includes('#')){hash='#'+pkgs[x][attr].split('#')[1];}
+      let char='?';
+      if(pkgs[x][attr].includes('?')){char='&';}
+         pkgs[x].setAttribute(attr,
+                           pkgs[x][attr].split('#')[0]+char+'hostname='+localhostname+'&referer='+window.location.host+hash);
+    }
+
+
+}
+
+
+
+
+if(!globalThis.backupElements){globalThis.backupElements={};}
+async function backupNode(element){try{
+  if(element.tagName.toLowerCase()!='link'){return;}
+  if(element.getAttribute('rel')!='stylesheet'){return;}
+  if(document.querySelectorAll('[href="'+element.getAttribute('href')+'"]').length>2){return;}
+  if(document.querySelector('[href="'+element.getAttribute('href')+'"][backup]')){
+await new Promise((resolve, reject) => {setTimeout(resolve,100);})
+
+  }
+  let backup = element.cloneNode(true);
+  let backupId = new Date().getTime();
+  backup.setAttribute('backup',backupId);
+  if(document.head){
+  document.head.insertBefore(backup,document.head.firstElementChild);
+  }else{
+  let h=document.createElement('head');
+  document.firstElementChild.appendChild(h);
+  document.firstElementChild.appendChild(backup);
+  }
+  backup.promise = new Promise((resolve, reject) => {
+    globalThis.backupElements[''+backupId]={"promise":backup.promise,"resolve":resolve};
+});
+  backup.onerror = function(e){globalThis.backupElements[backupId].resolve();}
+  backup.onload = function(e){globalThis.backupElements[backupId].resolve();}
+  backup.style.visibility="hidden";
+  if(document.head){
+  document.head.insertBefore(backup,document.head.firstElementChild);
+  }else{
+  let h=document.createElement('head');
+  document.firstElementChild.appendChild(h);
+  document.firstElementChild.appendChild(backup);
+  }
+const promise1 = new Promise((resolve, reject) => {setTimeout(resolve,100);});
+
+  await Promise.race([backup.promise,promise1]) ;
+  return;
+}catch(e){
+  return;
+  }
+}
+
+
+      function linkSheets(){
+       let linksheets = document.querySelectorAll('link[rel="stylesheet"]:not([styled])');
+       let linksheets_length = linksheets.length;
+       for(let i=0;i<linksheets_length;i++){try{
+if(document.querySelector('style[url="'+linksheets[i].href+'"]')){
+continue;
+}
+
+let request = new XMLHttpRequest();
+request.open("GET", linksheets[i].href, false); 
+request.send(null);
+
+if (request.status === 200) {
+ let linksheet_text = request.responseText; 
+ let ls = document.createElement('style');
+ ls.innerHTML = linksheet_text;
+ ls.setAttribute('url',linksheets[i].href);
+ document.body.appendChild(ls)
+}
+
+       linksheets[i].setAttribute('styled','true');
+
+       }catch(e){linksheets[i].setAttribute('styled','true');continue;}}
+
+     }
+
+       async function linkSheetsAsync(){
+        let linksheets = document.querySelectorAll('link[rel="stylesheet"]:not([styled],[backup])');
+        let linksheets_length = linksheets.length;
+        for(let i=0;i<linksheets_length;i++){try{
+if(document.querySelector('style[url="'+linksheets[i].href+'"]')){
+continue;
+}
+
+
+     let request = await fetch(linksheets[i].href);
+
+
+     let linksheet_text = await request.text(); 
+     let ls = document.createElement('style');
+     ls.innerHTML = linksheet_text;
+     ls.setAttribute('url',linksheets[i].href);
+     document.body.appendChild(ls)
+
+
+        linksheets[i].setAttribute('styled','true');
+
+        }catch(e){linksheets[i].setAttribute('styled','true');continue;}}
+
+      }
+
+
+
+
+
+void async function preloaded(){
+try{
+
+const cache = await caches.open('app');
+let all = await cache.matchAll();
+
+for(let i=0;i<all.length;i++){
+try{
+const url = all[i].url;
+let links = document.querySelectorAll('a[href="'+url+'"]');
+for(let x=0;x<links.length;x++){try{
+
+links[x].setAttribute('preloaded','true');
+
+
+}catch(e){continue;}}
+
+
+}catch(e){continue;}}
+}catch(e){}
+}();
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function preloadLink(a){
+if(!a){return;}
+a.setAttribute('preloaded','true');
+preloader(a.href);
+}
+
+
+
+async function preloader(url){
+  let ifr = document.createElement('iframe');
+  ifr.setAttribute('frameborder','0');
+  ifr.style.border='none';
+  ifr.style.padding='0px';
+  ifr.style.margin='0px';
+  ifr.style.visibility='none';
+  ifr.style.height='0px';
+  ifr.style.width='0px';
+  ifr.src = url;
+  document.body.appendChild(ifr);
+  await sleep(5000);
+  ifr.remove();
+}
+
+setInterval(function(){
+
+if(window==window.top){
+  preloadLink(document.querySelector('a[href^="'+window.location.origin+'"]:not([preloaded],html[user-agent*="obile"] *)'));
+}
+
+},8000);
+
+
+      
+</script>
+  
+  <script>
+
+    void function rubyscript(){
+
+    globalThis.await=(promise)=>{console.log("Attempting to await promise in synchronous context ",promise);return promise;};
+
+    globalThis.yield=(next)=>{console.log("Attempting to yield next outside of a generator ",next);return next;};
+
+
+    globalThis.queryApplyAll=async function(query,func){
+
+    let elems=Array.from(document.querySelectorAll(query));
+    const elems_length=elems.length;
+    for(let i=0;i<elems_length;i++){try{
+      func(elems[i]);
+    }catch(e){await("queryApplyAll");console.log(e); continue;}}
+
+    }
+
+    Element.prototype.updateAttribute=function(attr,val){
+    const el = this;
+    if(!(el.hasAttribute(attr,val))){
+    el.setAttribute(attr,val);
+    }else{
+    if(el.getAttribute(attr)!=val){
+    el.setAttribute(attr,val);
+    }
+    }
+    }
+
+    if(!(globalThis.declarations)){globalThis.declarations=[];globalThis.declarationStrings=[];}
+
+    globalThis.declare=function(func){
+        let funcString=func.toString();
+        if(!(declarationStrings.includes(funcString))){
+         globalThis.declarations.push(func);
+         globalThis.declarationStrings.push(funcString);
+        }
+    };
+
+    globalThis.declareEvaluator=async function(){
+    
+      const declarations_length = declarations.length;
+    	for(let i = 0;i < declarations_length;i++){try{
+   
+    		declarations[i]();
+   
+    	}catch(e){await("declareEvaluator");console.log(e);continue;}}
+   
+    };
+
+
+    globalThis.declareEvaluator();
+    document.addEventListener("DOMContentLoaded", (event) => {globalThis.declareEvaluator();});
+    document.addEventListener("readystatechange", (event) => {globalThis.declareEvaluator();});
+    window.addEventListener("load", (event) => {globalThis.declareEvaluator();});
+    setInterval(function(){globalThis.declareEvaluator();},100);
+
+
+
+    globalThis.page_html = document.querySelector('html');
+
+    page_html.setAttribute('window-location' , window.location.href);
+    declare(()=>page_html.updateAttribute('window-location' , window.location.href));
+
+    page_html.setAttribute('user-agent' , navigator.userAgent);
+    declare(()=>page_html.updateAttribute('user-agent' , navigator.userAgent));
+
+    if (window!=window.top){
+    page_html.setAttribute('framed','');
+    }
+
+    declare(()=>{
+
+      if(window.innerHeight==window.innerWidth){
+        page_html.updateAttribute('orientation','square');
+      }
+      if(window.innerHeight>window.innerWidth){
+        page_html.updateAttribute('orientation','portrait');
+      }
+      if(window.innerHeight<window.innerWidth){
+        page_html.updateAttribute('orientation','landscape');
+      }
+
+    });
+
+
+    declare(()=>{
+
+      const untagged = Array.from(document.querySelectorAll(':not([tag-name])'));
+      const untagged_length=untagged.length;
+      for(let i=0;i<untagged_length;i++){try{
+      const tagname = untagged[i].outerHTML.toString().split('<')[1].split(' ')[0].split('>')[0];
+      untagged[i].setAttribute('tag-name',tagname);
+      }catch(e){continue;}}
+
+    });
+
+
+    function swapSapphireText(el){
+
+      if(!el){return;}
+      var n, a=[], walk=document.createTreeWalker(el,NodeFilter.SHOW_</script>
+  
+  <script>
+
+globalThis.highlightLang='ruby';
+
+globalThis.highlighter=async function(){
+  if(document.querySelector('[class*="language-"]:not(:has(.token,a))')){
+  try{
+    if(globalThis.Prism){
+      let hs=Array.from(document.querySelectorAll('[class*="language-"]:not(:has(.token,a))'));
+      let hs_length=hs.length;
+      for(let i=0 ; i<hs_length ; i++){try{
+        await Prism.highlightElement?.(hs[i]);
+      }catch(e){await("highlight");continue;}}
+      //await Prism.highlightAll();
+      }
+      
+    }catch(e){await(console.log(e));}
+  }
+}
+
+
+declare(async ()=>{
+if(!(document.querySelector('link[href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css"]'))){
+  let prismCss = document.createElement('link');
+  prismCss.setAttribute('href','https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css');
+  prismCss.updateAttribute('rel','stylesheet');
+  document.firstElementChild.appendChild(prismCss);
+}
+
+await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js');
+await import('https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-ruby.min.js');
+
+
+queryApplyAll('code a',(a)=>{a.updateAttribute('class','token');});
+
+let prs=Array.from(document.querySelectorAll('pre:not([class],:has(a))'));
+const prs_length=prs.length;
+for(let i=0;i<prs_length;i++){try{
+  prs[i].innerHTML='<code class="language-ruby">'+prs[i].innerHTML+'</code>';
+  prs[i].updateAttribute('class','language-ruby');
+}catch(e){await console.log(e); continue;}}
+
+let notprs=Array.from(document.querySelectorAll(':not(pre)>code:not(:has(a))'));
+const notprs_length=notprs.length;
+for(let i=0;i<notprs_length;i++){try{
+  notprs[i].updateAttribute('class','language-ruby');
+  notprs[i].outerHTML='<pre class="language-ruby">'+notprs[i].outerHTML+'</pre>';
+}catch(e){await console.log(e); continue;}}
+
+let aprs=Array.from(document.querySelectorAll('pre[class*="language-"]:not(:has(code,.token,a))'));
+const aprs_length=aprs.length;
+for(let i=0;i<aprs_length;i++){try{
+if(aprs[i].innerHTML.toString().includes('#highlight#')){
+aprs[i].innerHTML='<code class="language-ruby">'+aprs[i].innerHTML+'</code>';
+}else{
+  aprs[i].innerHTML='<code class="language-ruby">\\n#highlight#\\n'+aprs[i].innerHTML+'</code>';
+  }
+}catch(e){await console.log(e); continue;}}
+
+if(document.querySelector('[class*="language-"]:not(:has(.token,a))')){
+highlighter();
+}
+
+});
+
+
+
+declare(async ()=>{
+
+let comments=Array.from(document.querySelectorAll('.comment:not([comment="highlight"])'));
+const comments_length=comments.length;
+for(let i=0;i<comments_length;i++){try{
+
+if(comments[i].innerHTML.toString().trim()=='#highlight#'){
+  comments[i].updateAttribute('comment','highlight');
+}
+
+}catch(e){await("comments");console.log(e);continue;}}
+
+
+});
+
+</script>
+  
+  <style>
+  
+
+ html{cursor: url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/0/0c/383MS6.png), auto;}
+
+ html[window-location*="sapphire"],
+ html[workerhost*="sapphire"]{
+cursor:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/9/95/382MS6.png), auto;
+ 
+ }
+
+ html[window-location*="emerald"],
+ html[workerhost*="emerald"]{
+cursor:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/d/d0/384MS6.png), auto;
+
+ }
+
+  html[window-location*="rua"],
+  html[workerhost*="rua"]{
+cursor: url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/1/1b/112_II_OD.png), auto;
+
+  }
+ 
+#header_content>a{
+  background: url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/e/ed/Spr_5b_383.png) no-repeat left 8px !important;
+  background-size: 20% !important;
+}
+
+@media screen and (min-width: 768px) {
+
+  a.download-link{
+    background:#CC342D url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/8/8e/Ani383OD.png) no-repeat 8px center !important;
+    background-size: 25% !important;
+    background-position-x: left !important;
+    background-position-y: bottom !important;
+  }
+  
+}
+
+html[window-location*="ruby-doc.com"] #header{
+background:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/7/7d/Spr_3e_383.png) 850px 0 no-repeat !important;
+}
+
+
+
+html[window-location*="rua"]:not([framed]),
+html[workerhost*="rua"]:not([framed])
+{
+filter:hue-rotate(-100deg) brightness(0.8) saturate(2) contrast(2)
+}
+
+
+
+html[window-location*="sapphire"]:not([framed]),
+html[workerhost*="sapphire"]:not([framed]){
+filter:hue-rotate(-120deg);
+}
+
+html[window-location*="sapphire"] #header_content>a,
+html[workerhost*="sapphire"] #header_content>a{
+  background:  url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/1/10/Spr_5b_382.png) no-repeat left 8px !important;
+  background-size: 25% !important;
+  background-position-y: bottom !important;
+  filter:hue-rotate(120deg);
+}
+
+
+@media screen and (min-width: 768px) {
+
+ html[window-location*="sapphire"] a.download-link,
+ html[workerhost*="sapphire"] a.download-link{
+    background:#CC342D url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/c/c6/Ani382OD.png) no-repeat 8px center !important;
+background-size: 20% !important;
+    background-position-x: left !important;
+    background-position-y: -10px !important;
+    filter: hue-rotate(120deg);
+      background-color: #2D34CC !important;
+      border: 2px solid #161c9b !important;
+      -webkit-box-shadow: 0 2px 0 #161c9b !important;
+      -moz-box-shadow: 0 2px 0 #161c9b !important;
+      box-shadow: 0 2px 0 #161c9b !important;
+
+  }
+
+}
+
+html[window-location*="sapphire"][window-location*="ruby-doc.com"] #header,
+html[workerhost*="sapphire"][window-location*="ruby-doc.com"] #header{
+background:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/8/80/Spr_3e_382.png) 850px 0 no-repeat !important;
+filter: hue-rotate(120deg);
+
+}
+
+html[window-location*="sapphire"][window-location*="ruby-doc.com"] #header a,
+html[workerhost*="sapphire"][window-location*="ruby-doc.com"] #header a{
+  filter:hue-rotate(-120deg);
+  color:#CC342D !important;
+}
+
+
+
+
+
+html[window-location*="emerald"]:not([framed]),
+html[workerhost*="emerald"]:not([framed]){
+filter:hue-rotate(135deg);
+}
+
+html[window-location*="emerald"] #header_content>a,
+html[workerhost*="emerald"] #header_content>a{
+  background:  url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/5/55/Spr_5b_384.png)   no-repeat left 8px !important;
+  background-size: 25% !important;
+  background-position-y: bottom !important;
+  filter:hue-rotate(-135deg);
+}
+
+
+@media screen and (min-width: 768px) {
+
+ html[window-location*="emerald"] a.download-link,
+ html[workerhost*="emerald"] a.download-link{
+    background:#CC342D url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/2/27/Box_XD_384.png) no-repeat 8px center !important;
+    background-size: 18% !important;
+    background-position-y: bottom !important;
+    filter: hue-rotate(-135deg);
+      background-color: #34CC2D !important;
+      border: 2px solid #1c9b16 !important;
+      -webkit-box-shadow: 0 2px 0 #1c9b16 !important;
+      -moz-box-shadow: 0 2px 0 #1c9b16 !important;
+      box-shadow: 0 2px 0 #1c9b16 !important;
+
+  }
+
+}
+
+html[window-location*="emerald"][window-location*="ruby-doc.com"] #header,
+html[workerhost*="emerald"][window-location*="ruby-doc.com"] #header{
+  background:url(https://api.typescripts.org/corsFetch/https://archives.bulbagarden.net/media/upload/4/4f/Spr_3e_384.png) 850px 0 no-repeat !important;
+  filter:hue-rotate(-135deg)
+}
+
+html[window-location*="emerald"][window-location*="ruby-doc.com"] #header a,
+html[workerhost*="emerald"][window-location*="ruby-doc.com"] #header a{
+  filter:hue-rotate(135deg);
+  color:#34CC2D !important;
+}
+
+
+
+
+
+
+html[window-location*="docs.ruby-lang.org"] a,
+html[window-location*="ruby-doc.com"] a,
+html[window-location*="ruby-doc.com"] h1,
+html[window-location*="stdlib"] a,
+html[window-location*="stdlib"] h1{
+color: #CC342D !important;
+text-shadow:1px 1px 2px white, -1px -1px 2px white, -1px 1px 2px white, 1px -1px 2px white;
+}
+
+.menu_box>a,[id="actionbar"] a{text-shadow:none !important;} 
+
+.default-ad,.carbonad,[data-attributes*="carbon"]{display:none !important;}
+
+[comment="highlight"]{display:none;}
+
+table,table *,.language-ruby{
+border-radius: 1vmin;
+box-shadow:0 0 3px rgba(0,0,0,0.4);
+}
+.language-ruby *,td a,td i,span{
+box-shadow:none !important;
+}
+
+
+  </style>
+  <script src="/sw.js"></script>
+  <script src="/api/link-resolver.js"></script>
+  <script src="/api/rubyscript.js"></script>
+  <script src="/api/highlight.js"></script>
+  <link rel="stylesheet" type="text/css" href="/api/rubystyle.css"> </head>
+
+  
+
+  <body id="home-page-layout">
+    <div id="header">
+      <div id="header_content" class="container">
+        <a href="/en/">
+          <h1>Ruby</h1>
+          <h2>A Programmer's Best Friend</h2>
+        </a>
+
+        <div class="site-links">
+          
+
+  <a href="/en/" class="home">Home</a>
+
+  <a href="/en/downloads/">Downloads</a>
+
+  <a href="/en/documentation/">Documentation</a>
+
+  <a href="/en/libraries/">Libraries</a>
+
+  <a href="/en/community/">Community</a>
+
+  <a href="/en/news/">News</a>
+
+  <a href="/en/security/">Security</a>
+
+  <a href="/en/about/">About Ruby</a>
+
+
+          <a href="#" class="menu selected">Menu</a>
+        </div>
+
+        <div id="search-box">
+          
+<form id="search-form" action="https://www.google.com/cse">
+  <table class="fieldset">
+    <tr>
+      <td>
+        <input class="field" type="text" name="q" size="31" style="background: white url(//www.google.com/coop/intl/en/images/google_custom_search_watermark.gif) left no-repeat" onfocus="this.style.background='white'" onblur="if (/^\s*$/.test(this.value)) this.style.background='white url(//www.google.com/coop/intl/en/images/google_custom_search_watermark.gif) left no-repeat'"/>
+      </td>
+      <td>
+        <input type="hidden" name="cx" value="013598269713424429640:g5orptiw95w" />
+        <input type="hidden" name="ie" value="UTF-8" />
+        <input class="button" type="submit" name="sa" value="Search" />
+      </td>
+    </tr>
+  </table>
+</form>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="page">
+      
+<div id="intro-container">
+  <div class="container">
+    <div id="intro-wrapper">
+  <div id="intro">
+    <h1>Ruby is...</h1>
+
+    <p>
+    A dynamic, open source programming language with a focus on
+    simplicity and productivity. It has an elegant syntax that is
+    natural to read and easy to write.
+    </p>
+
+    <a href="downloads/" class="download-link">Download Ruby</a>
+    or
+    <a href="about/">Read More...</a>
+
+  </div>
+  <div id="code"><noscript><div class="highlight"><pre><code class="ruby">
+    <span class="c1"># The famous Hello World</span>
+    <span class="c1"># Program is trivial in</span>
+    <span class="c1"># Ruby. Superfluous:</span>
+    <span class="c1">#</span>
+    <span class="c1"># * A &quot;main&quot; method</span>
+    <span class="c1"># * Newline</span>
+    <span class="c1"># * Semicolons</span>
+    <span class="c1">#</span>
+    <span class="c1"># Here is the Code:</span>
+
+    <span class="nb">puts</span> <span class="s2">&quot;Hello World!&quot;</span>
+  </code></pre></div></noscript></div>
+</div>
+
+  </div>
+</div>
+
+
+
+      <div id="main-wrapper" class="container">
+        <div id="main">
+          <div id="content-wrapper">
+  
+<!-- //-->
+
+
+
+
+  <div id="content">
+    
+
+
+
+
+
+
+
+<div class="post">
+  <h3><a href="/en/news/2023/12/11/ruby-3-3-0-rc1-released/">Ruby 3.3.0-rc1 Released</a></h3>
+
+  
+<p>We are pleased to announce the release of Ruby 3.3.0-rc1. Ruby 3.3 adds a new parser named Prism, uses Lrama as a parser generator, adds a new pure-Ruby JIT compiler named RJIT, and many performance improvements especially YJIT.</p>
+
+
+  <p class="post-link"><a href="/en/news/2023/12/11/ruby-3-3-0-rc1-released/">Continue Reading...</a></p>
+
+  <p class="post-info">Posted by naruse on 11 Dec 2023</p>
+</div>
+
+<div class="post">
+  <h3><a href="/en/news/2023/11/12/ruby-3-3-0-preview3-released/">Ruby 3.3.0-preview3 Released</a></h3>
+
+  
+<p>We are pleased to announce the release of Ruby 3.3.0-preview3. Ruby 3.3 adds a new parser named Prism, uses Lrama as a parser generator, adds a new pure-Ruby JIT compiler named RJIT, and many performance improvements especially YJIT.</p>
+
+
+  <p class="post-link"><a href="/en/news/2023/11/12/ruby-3-3-0-preview3-released/">Continue Reading...</a></p>
+
+  <p class="post-info">Posted by naruse on 12 Nov 2023</p>
+</div>
+
+<div class="post">
+  <h3><a href="/en/news/2023/09/14/ruby-3-3-0-preview2-released/">Ruby 3.3.0-preview2 Released</a></h3>
+
+  
+
+
+  <p class="post-link"><a href="/en/news/2023/09/14/ruby-3-3-0-preview2-released/">Continue Reading...</a></p>
+
+  <p class="post-info">Posted by naruse on 14 Sep 2023</p>
+</div>
+
+<div class="post">
+  <h3><a href="/en/news/2023/06/29/redos-in-uri-CVE-2023-36617/">CVE-2023-36617: ReDoS vulnerability in URI</a></h3>
+
+  <p>We have released the uri gem version 0.12.2, 0.10.3 that has a security fix for a ReDoS vulnerability.
+This vulnerability has been assigned the CVE identifier <a href="https://www.cve.org/CVERecord?id=CVE-2023-36617">CVE-2023-36617</a>.</p>
+
+
+  <p class="post-link"><a href="/en/news/2023/06/29/redos-in-uri-CVE-2023-36617/">Continue Reading...</a></p>
+
+  <p class="post-info">Posted by hsbt on 29 Jun 2023</p>
+</div>
+
+
+<div id="news">
+  <h3>Other News</h3>
+  <ul>
+    
+    <li>
+      <a href="/en/news/2023/05/12/ruby-3-3-0-preview1-released/">Ruby 3.3.0-preview1 Released</a><br>
+      <span class="post-info">Posted by naruse on 12 May 2023</span>
+    </li>
+    
+    <li>
+      <a href="/en/news/2023/03/30/ruby-3-2-2-released/">Ruby 3.2.2 Released</a><br>
+      <span class="post-info">Posted by naruse on 30 Mar 2023</span>
+    </li>
+    
+    <li>
+      <a href="/en/news/2023/03/30/ruby-3-1-4-released/">Ruby 3.1.4 Released</a><br>
+      <span class="post-info">Posted by nagachika on 30 Mar 2023</span>
+    </li>
+    
+    <li>
+      <a href="/en/news/2023/03/30/ruby-3-0-6-released/">Ruby 3.0.6 Released</a><br>
+      <span class="post-info">Posted by usa on 30 Mar 2023</span>
+    </li>
+    
+    <li>
+      <a href="/en/news/2023/03/30/ruby-2-7-8-released/">Ruby 2.7.8 Released</a><br>
+      <span class="post-info">Posted by usa on 30 Mar 2023</span>
+    </li>
+    
+    <li>
+      <a href="/en/news/2023/03/30/redos-in-time-cve-2023-28756/">CVE-2023-28756: ReDoS vulnerability in Time</a><br>
+      <span class="post-info">Posted by hsbt on 30 Mar 2023</span>
+    </li>
+    
+  </ul>
+
+  <p class="more">
+    <a href="news/">More News...</a>
+  </p>
+</div>
+
+  </div>
+</div>
+<hr class="hidden-modern" />
+
+<div id="sidebar-wrapper">
+  <div id="sidebar">
+    
+
+
+
+
+<div class="navigation">
+  <h3><strong>Get Started</strong>, it's easy!</h3>
+
+  <ul class="menu">
+    <li><a href="https://try.ruby-lang.org/">Try Ruby! (in your browser)</a></li>
+
+    
+    <li><a href="/en/documentation/quickstart/">Ruby in Twenty Minutes</a></li>
+    
+
+    
+    <li><a href="/en/documentation/ruby-from-other-languages/">Ruby from Other Languages</a></li>
+    
+  </ul>
+</div>
+
+
+
+<div class="navigation">
+  <h3><strong>Explore</strong> a new world…</h3>
+  <ul class="menu">
+    
+    <li><a href="/en/documentation/">Documentation</a></li>
+    
+
+    
+
+    
+    <li><a href="https://rubybib.org/">Academic Research</a></li>
+    
+
+    
+    <li><a href="/en/libraries/">Libraries</a></li>
+    
+
+    
+    <li><a href="/en/documentation/success-stories/">Success Stories</a></li>
+    
+  </ul>
+</div>
+
+
+
+<div class="navigation">
+  <h3><strong>Participate</strong> in a friendly and growing community.</h3>
+  <ul>
+    
+    <li><a href="/en/community/mailing-lists/">Mailing Lists</a>: Talk about Ruby with programmers from all around the world.</li>
+    
+
+    
+    <li><a href="/en/community/user-groups/">User Groups</a>: Get in contact with Rubyists in your area.</li>
+    
+
+    
+    <li><a href="/en/community/weblogs/">Blogs</a>: Read about what’s happening right now in the Ruby community.</li>
+    
+
+    
+    <li><a href="/en/community/ruby-core/">Ruby Core</a>: Help polish the rough edges of the latest Ruby.</li>
+    
+
+    
+    <li><a href="https://bugs.ruby-lang.org/">Issue Tracking</a>: Report or help solve issues in Ruby.</li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+    <h3>Syndicate</h3>
+    <p><a href="/en/feeds/news.rss">Recent News (RSS)</a></p>
+
+
+  </div>
+</div>
+<hr class="hidden-modern" />
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="footer">
+        <div class="site-links">
+          
+
+  <a href="/en/" class="home">Home</a>
+
+  <a href="/en/downloads/">Downloads</a>
+
+  <a href="/en/documentation/">Documentation</a>
+
+  <a href="/en/libraries/">Libraries</a>
+
+  <a href="/en/community/">Community</a>
+
+  <a href="/en/news/">News</a>
+
+  <a href="/en/security/">Security</a>
+
+  <a href="/en/about/">About Ruby</a>
+
+
+        </div>
+
+        <p>
+
+  This site in other languages:
+
+<a href="/bg/">Български</a>,
+<a href="/de/">Deutsch</a>,
+<a href="/en/">English</a>,
+<a href="/es/">Español</a>,
+<a href="/fr/">Français</a>,
+<a href="/id/">Bahasa Indonesia</a>,
+<a href="/it/">Italiano</a>,
+<a href="/ja/">日本語</a>,
+<a href="/ko/">한국어</a>,
+<a href="/pl/">polski</a>,
+<a href="/pt/">Português</a>,
+<a href="/ru/">Русский</a>,
+<a href="/tr/">Türkçe</a>,
+<a href="/vi/">Tiếng Việt</a>,
+<a href="/zh_cn/">简体中文</a>,
+<a href="/zh_tw/">繁體中文</a>.
+</p>
+
+        
+  <p><a href="/en/about/website/">This website</a> is proudly maintained by members of the Ruby community.</p>
+
+
+      </div>
+    </div>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-620926-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+  gtag('config', 'UA-620926-3');
+</script>
+<title>Documentation for Ruby</title>
+<link rel="stylesheet" href="/assets/bootstrap.min.css">
+</head>
+<bodus>
+<div class="container">
+  <div class="page-header">
+    <h1>Documentation for Ruby</h1>
+  </div>
+  <div class="list-group">
+    <a class="list-group-item" href="./master/">Ruby master</a>
+    <a class="list-group-item" href="./3.2/">Ruby 3.2</a>
+    <a class="list-group-item" href="./3.1/">Ruby 3.1</a>
+    <a class="list-group-item" href="./3.0/">Ruby 3.0</a>
+    <a class="list-group-item" href="./2.7.0/">Ruby 2.7.0</a>
+    <a class="list-group-item" href="./2.6.0/">Ruby 2.6.0 (outdated)</a>
+    <a class="list-group-item" href="./2.5.0/">Ruby 2.5.0 (outdated)</a>
+    <a class="list-group-item" href="./2.4.0/">Ruby 2.4.0 (outdated)</a>
+    <a class="list-group-item" href="./2.3.0/">Ruby 2.3.0 (outdated)</a>
+    <a class="list-group-item" href="./2.2.0/">Ruby 2.2.0 (outdated)</a>
+    <a class="list-group-item" href="./2.1.0/">Ruby 2.1.0 (outdated)</a>
+    <a class="list-group-item" href="./2.0.0/">Ruby 2.0.0 (outdated)</a>
+  </div>
+</div>
+</body>
+</html>
+<style>
+  html[window-location*="docs.ruby-lang.org"]>body>[id="header"],
+  html[window-location*="docs.ruby-lang.org"]>body>[id="page"],
+  html[window-location*="docs.ruby-lang.org"]>body>.container
+  {display:none;}
+
+  html:not([window-location*="docs.ruby-lang.org"])>body>bodus
+  {display:none;}
+  </style>
